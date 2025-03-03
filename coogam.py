@@ -12,12 +12,34 @@ sympy는 어디서 어떻게 써야할 지 몰라서 일단 안썼습니다... �
 
 import sympy as sp
 import numpy as np
+from collections import deque
 
-def bstr_divider(x: str) -> list[str]:
+ex_str = "0000000100000011100100010000110010011100100110010000010011100110111001111000011001110001100010010001010110101000011101000011000101000000110000010110010101010001011000000010010111110001010010011100010110000100101011001111101101111100110001110010011011100000001110100100111001100010000110001000100001010111011111100101000111000010000000000001101010001001010001100011010000011011010111011"
+
+def bstr_divider(inbstr: str) -> list[str]:
     """
     385자리의 이진문자열을 적절히 나눠주는 함수
+    인덱싱:
+    99999/99999/88888/1010101010/1010101010/1010101010/1010101010/1111111111
     """
-    pass
+    listofx = []
+    for i in range(10):
+        a = inbstr[:9]
+        listofx.append(a)
+        inbstr = inbstr[9:]
+    for j in range(5):
+        b = inbstr[:8]
+        listofx.append(b)
+        inbstr = inbstr[8:]
+    for k in range(20):
+        c = inbstr[:10]
+        listofx.append(c)
+        inbstr = inbstr[10:]
+    for l in range(5):
+        d = inbstr[:11]
+        listofx.append(d)
+        inbstr = inbstr[11:]
+    return listofx
 
 def calculate_valid_positions_1(x: str) -> list[tuple[int, int]]:
     """
@@ -154,6 +176,42 @@ def create_coordinate_grid(rows, cols):
     grid = np.zeros((rows, cols), dtype=int)
     return grid
 
+def coordinatecalculator(listofx: list) -> list[tuple[int, int]]:
+    listofx = deque(listofx)
+    block1_list = []
+    block2_list = []
+    block3_list = []
+    block4_list = []
+    block5_list = []
+    block6_list = []
+    block7_list = []
+    block8_list = []
+    for i in range(5):
+        firststr = listofx.popleft()
+        block1_list.append(calculate_valid_positions_1(firststr))
+    for i in range(5):
+        firststr = listofx.popleft()
+        block2_list.append(calculate_valid_positions_2(firststr))
+    for i in range(5):
+        firststr = listofx.popleft()
+        block3_list.append(calculate_valid_positions_3(firststr))
+    for i in range(5):
+        firststr = listofx.popleft()
+        block4_list.append(calculate_valid_positions_4(firststr))
+    for i in range(5):
+        firststr = listofx.popleft()
+        block5_list.append(calculate_valid_positions_5(firststr))
+    for i in range(5):
+        firststr = listofx.popleft()
+        block6_list.append(calculate_valid_positions_6(firststr))
+    for i in range(5):
+        firststr = listofx.popleft()
+        block7_list.append(calculate_valid_positions_7(firststr))
+    for i in range(5):
+        firststr = listofx.popleft()
+        block8_list.append(calculate_valid_positions_8(firststr))
+    return block1_list + block2_list + block3_list + block4_list + block5_list + block6_list + block7_list + block8_list    
+
 def mark_coordinate(grid, coordinates, value=1):
     """
     그리드의 여러 좌표에 값을 할당하는 함수
@@ -211,14 +269,13 @@ def check_padding_area(grid, padding_size=2):
     return len(invalid_positions) == 0, invalid_positions
 
 # 사용 예시
-rows, cols = 17, 12  # 15x10 그리드 + 상하좌우 2칸씩 패딩
+rows, cols = 19, 14  # 15x10 그리드 + 상하좌우 2칸씩 패딩
 grid = create_coordinate_grid(rows, cols)
 
-
 # 단일 좌표에 값 할당하는 예시
-coordinatelist = calculate_valid_positions_8("00000000111")
-
-grid = mark_coordinate(grid, coordinatelist)
+coordinates = coordinatecalculator(bstr_divider(ex_str))
+flat_coordinates = [pos for sublist in coordinates for pos in sublist]
+grid = mark_coordinate(grid, flat_coordinates)
 print("전체 그리드:")
 print(grid)
 
@@ -229,3 +286,4 @@ print(f"유효한 그리드인가?: {is_valid}")
 
 if not is_valid:
     print("잘못된 위치(패딩 영역에 1이 있는 좌표):", invalid_positions)
+    
