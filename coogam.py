@@ -178,39 +178,32 @@ def create_coordinate_grid(rows, cols):
 
 def coordinatecalculator(listofx: list) -> list[tuple[int, int]]:
     listofx = deque(listofx)
-    block1_list = []
-    block2_list = []
-    block3_list = []
-    block4_list = []
-    block5_list = []
-    block6_list = []
-    block7_list = []
-    block8_list = []
+    block_list = []
     for i in range(5):
         firststr = listofx.popleft()
-        block1_list.append(calculate_valid_positions_1(firststr))
+        block_list += calculate_valid_positions_1(firststr)
     for i in range(5):
         firststr = listofx.popleft()
-        block2_list.append(calculate_valid_positions_2(firststr))
+        block_list += calculate_valid_positions_2(firststr)
     for i in range(5):
         firststr = listofx.popleft()
-        block3_list.append(calculate_valid_positions_3(firststr))
+        block_list += calculate_valid_positions_3(firststr)
     for i in range(5):
         firststr = listofx.popleft()
-        block4_list.append(calculate_valid_positions_4(firststr))
+        block_list += calculate_valid_positions_4(firststr)
     for i in range(5):
         firststr = listofx.popleft()
-        block5_list.append(calculate_valid_positions_5(firststr))
+        block_list += calculate_valid_positions_5(firststr)
     for i in range(5):
         firststr = listofx.popleft()
-        block6_list.append(calculate_valid_positions_6(firststr))
+        block_list += calculate_valid_positions_6(firststr)
     for i in range(5):
         firststr = listofx.popleft()
-        block7_list.append(calculate_valid_positions_7(firststr))
+        block_list += calculate_valid_positions_7(firststr)
     for i in range(5):
         firststr = listofx.popleft()
-        block8_list.append(calculate_valid_positions_8(firststr))
-    return block1_list + block2_list + block3_list + block4_list + block5_list + block6_list + block7_list + block8_list    
+        block_list += calculate_valid_positions_8(firststr)
+    return block_list
 
 def mark_coordinate(grid, coordinates, value=1):
     """
@@ -274,8 +267,7 @@ grid = create_coordinate_grid(rows, cols)
 
 # 단일 좌표에 값 할당하는 예시
 coordinates = coordinatecalculator(bstr_divider(ex_str))
-flat_coordinates = [pos for sublist in coordinates for pos in sublist]
-grid = mark_coordinate(grid, flat_coordinates)
+grid = mark_coordinate(grid, coordinates)
 print("전체 그리드:")
 print(grid)
 
